@@ -14,18 +14,18 @@ namespace WebApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration config;
-    private readonly IUserService userService;
+    private readonly IAuthService authService;
 
-    public AuthController(IConfiguration config, IUserService userService)
+    public AuthController(IConfiguration config, IAuthService authService)
     {
         this.config = config;
-        this.userService = userService;
+        this.authService = authService;
     }
 
     [HttpPost, Route("register")]
     public async Task<ActionResult> Register([FromBody] User user)
     {
-        await userService.RegisterUser(user);
+        await authService.RegisterUser(user);
         return Ok();
     }
 
@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            User user = await userService.GetUser(userLoginDto.Username, userLoginDto.Password);
+            User user = await authService.ValidateUser(userLoginDto.Username, userLoginDto.Password);
             string token = GenerateJwt(user);
         
             return Ok(token);

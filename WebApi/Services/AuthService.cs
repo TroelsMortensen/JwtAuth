@@ -3,7 +3,7 @@ using Shared.Models;
 
 namespace WebApi.Services;
 
-public class UserService : IUserService
+public class AuthService : IAuthService
 {
 
     private readonly IList<User> users = new List<User>
@@ -32,7 +32,7 @@ public class UserService : IUserService
         }
     };
 
-    public Task<User> GetUser(string username, string password)
+    public Task<User> ValidateUser(string username, string password)
     {
         User? existingUser = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         if (existingUser == null)
